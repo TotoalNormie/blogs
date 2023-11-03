@@ -1,3 +1,9 @@
+<?php
+
+include 'handle.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +20,9 @@
     <header>ABLOGUS</header>
     <main>
         <form method="post">
+            <label for="title">Tituls:</label>
             <input type="title">
+            <label for="description">Apraksts:</label>
             <textarea name="description" rows="1"></textarea>
             <button>pievienot <i class="fa-solid fa-thumbs-up"></i></button>
         </form>
