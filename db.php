@@ -18,7 +18,7 @@ class DB {
     protected function insert($data, $table) {
         $columns = implode(', ', array_keys($data));
         $values = implode("', '", array_values($data));
-        $query = "INSERT INTO $table ({$columns}) VALUES ({$values}')";
+        $query = "INSERT INTO $table ({$columns}) VALUES ('{$values}')";
         $result = $this->conn->query($query);
         return $result;
     }

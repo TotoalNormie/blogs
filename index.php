@@ -2,55 +2,89 @@
 
 include 'handle.php';
 
+print_r($data);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-    <title>ABLOGUS</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+        <title>ABLOGUS</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-<body>
-    <header>ABLOGUS</header>
-    <main>
-        <form method="post">
-            <label for="title">Tituls:</label>
-            <input type="title">
-            <label for="description">Apraksts:</label>
-            <textarea name="description" rows="1"></textarea>
-            <button>pievienot <i class="fa-solid fa-thumbs-up"></i></button>
-        </form>
-        <div class="wrapper">
-            <form class="blog">
-                <div class="content">
-                    <h2>title</h2>
-                    <p>descriptoion</p>
-                </div>
-                <button class="edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="delete"><i class="fa-solid fa-eraser"></i></button>
+    <body>
+        <header>ABLOGUS</header>
+        <main>
+            <form method="post">
+                <label for="title">Tituls:</label>
+                <input type="text" name="title">
+                <label for="description">Apraksts:</label>
+                <textarea name="description" rows="1"></textarea>
+                <span>
+                    <?= $errorMessage ?>
+                </span>
+                <button>Pievienot <i class="fa-solid fa-thumbs-up"></i></button>
             </form>
-        </div>
+            <div class="wrapper">
+                <form class="blog">
+                    <div class="content">
+                        <h2>title</h2>
+                        <p>descriptoion</p>
+                    </div>
+                    <button class="edit" name="action" value="edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="delete"><i class="fa-solid fa-eraser"></i></button>
+                </form>
+                <?php
+                foreach ($data as $blog) {
+                    $isEdit = isset($_GET["id"]) && $blog["id"] == $_GET["id"] && $_GET["action"] = 'edit' ? true : false;
+                    echo "<br><br>";                        ?>
+                    <form class="blog">
+                        <div class="content">
+                            <input type="hidden" name="id" value="<?=$blog["id"]?>">
+                            <? if ($isEdit) { ?>
+                                <label for="title">Tituls:</label>
+                                <input type="title" name="title" value="<?= $blog["title"] ?>">
+                                <label for="description">Apraksts:</label>
+                                <textarea name="description" rows="1"><?= $blog["description"] ?></textarea>
+                            <? } else { ?>
+                                <h2>
+                                    <?= $blog["title"] ?>
+                                </h2>
+                                <p>
+                                    <?= $blog["description"] ?>
+                                </p>
+                            <? } ?>
+                        </div>
+                        <button class="edit" name="action" value="<?= $isEdit ? "update" : "edit" ?>">
+                            <i class=" fa-solid
+                            fa-pen-to-square"></i></button>
+                        <button class="delete"><i class="fa-solid fa-eraser"></i></button>
+                    </form>
+                <?php } ?>
+            </div>
 
-    </main>
-    <footer>
-        the simplest blogging website
-    </footer>
-    <script>
-        const textarea = document.querySelectorAll('textarea');
-        for (elem of textarea) {
-            elem.addEventListener('input', function() {
-                this.style.height = 'auto';
-                const height =  this.scrollHeight + this.offsetHeight - this.clientHeight;
-                this.style.height = height + 'px';
-            });
-        }
-    </script>
-</body>
+        </main>
+        <footer>
+            the simplest blogging website
+        </footer>
+        <script>
+            const textarea = document.querySelectorAll('textarea');
+            for (elem of textarea) {
+                elem.addEventListener('input', function () {
+                    this.style.height = 'auto';
+                    const height = this.scrollHeight + this.offsetHeight - this.clientHeight + 2;
+                    this.style.height = height + 'px';
+                });
+            }
+        </script>
+    </body>
 
 </html>

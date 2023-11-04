@@ -34,13 +34,18 @@ $method =  $_SERVER['REQUEST_METHOD'];
 $data = $blog->outputBlog();
 
 $errorMessage = "";
+// print_r($data);
+echo $method;
 
-if($method == 'GET' && isset($_GET['action']) && $_GET['action'] = 'edit') {
+if($method == 'GET' && isset($_GET['action']) && $_GET['action'] = 'update') {
     echo 'edit';
 }elseif($method == 'GET' && isset($_GET['action']) && $_GET['action'] = 'delete') {
     echo 'delete';
 }elseif($method == 'POST') {
+    print_r($_POST);
     $errorMessage = $blog->createBlog($_POST);
+    header("Location: index.php");
+    die();
 }
 
 ?>
