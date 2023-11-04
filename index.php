@@ -2,7 +2,12 @@
 
 include 'handle.php';
 
-print_r($data);
+print_r($_GET);
+echo "<br>";
+print_r($_POST);
+
+$title = !empty($_POST) ? $_POST['title'] : "";
+$description = !empty($_POST) ? $_POST['description'] : "";
 
 ?>
 
@@ -25,48 +30,51 @@ print_r($data);
         <main>
             <form method="post">
                 <label for="title">Tituls:</label>
-                <input type="text" name="title">
+                <input type="text" name="title" value="<?=$title?>">
                 <label for="description">Apraksts:</label>
-                <textarea name="description" rows="1"></textarea>
+                <textarea name="description" rows="1"><?=$description?></textarea>
                 <span>
                     <?= $errorMessage ?>
                 </span>
                 <button>Pievienot <i class="fa-solid fa-thumbs-up"></i></button>
             </form>
             <div class="wrapper">
-                <form class="blog">
+                <!-- <form class="blog">
                     <div class="content">
                         <h2>title</h2>
                         <p>descriptoion</p>
                     </div>
                     <button class="edit" name="action" value="edit"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="delete"><i class="fa-solid fa-eraser"></i></button>
-                </form>
-                <?php
-                foreach ($data as $blog) {
-                    $isEdit = isset($_GET["id"]) && $blog["id"] == $_GET["id"] && $_GET["action"] = 'edit' ? true : false;
-                    echo "<br><br>";                        ?>
+                </form> -->
+                <?php foreach ($data as $blog) {
+                    $isEdit = isset($_GET["id"]) && $blog["id"] == $_GET["id"] && $_GET["action"] == 'edit' ? true : false;
+                    // echo "isEdit: " . ($isEdit ?"true":"false");
+                    ?>
                     <form class="blog">
                         <div class="content">
-                            <input type="hidden" name="id" value="<?=$blog["id"]?>">
-                            <? if ($isEdit) { ?>
+                            <input type="hidden" name="id" value="<?= $blog["id"] ?>">
+                            <?php if ($isEdit) { ?>
                                 <label for="title">Tituls:</label>
                                 <input type="title" name="title" value="<?= $blog["title"] ?>">
                                 <label for="description">Apraksts:</label>
                                 <textarea name="description" rows="1"><?= $blog["description"] ?></textarea>
-                            <? } else { ?>
+                                <span><?=$errorMessage?></span>
+                            <?php } else { ?>
                                 <h2>
                                     <?= $blog["title"] ?>
                                 </h2>
                                 <p>
                                     <?= $blog["description"] ?>
                                 </p>
-                            <? } ?>
+                            <?php } ?>
                         </div>
                         <button class="edit" name="action" value="<?= $isEdit ? "update" : "edit" ?>">
-                            <i class=" fa-solid
-                            fa-pen-to-square"></i></button>
-                        <button class="delete"><i class="fa-solid fa-eraser"></i></button>
+                            <i class=" fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="delete" name="action" value="delete">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
                     </form>
                 <?php } ?>
             </div>
