@@ -36,13 +36,6 @@ CREATE TABLE `blogs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `blogs`
---
-
-INSERT INTO `blogs` (`id`, `title`, `description`) VALUES
-(9, 'dfedfvfe', 'spooky\r\n\r\n\r\n\r\n\r\n\r\ndookie');
-
---
 -- Indexes for dumped tables
 --
 
