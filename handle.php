@@ -5,7 +5,7 @@ class Blog extends DB
     function outputBlog()
     {
         $data = $this->returnData('blogs');
-        for ($i = 1; $i < count($data); $i++) {
+        for ($i = 0; $i < count($data); $i++) {
             $data[$i]["title"] = nl2br($data[$i]["title"]);
             $data[$i]["description"] = nl2br($data[$i]["description"]);
         }
@@ -58,9 +58,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $data = $blog->outputBlog();
 
 $errorMessage = "";
-// print_r($data);
-echo $method;
-
+$editErrorMessage = "";
 $getData = $_GET;
 
 if ($method == 'GET' && isset($getData['action'])) {
@@ -70,15 +68,14 @@ if ($method == 'GET' && isset($getData['action'])) {
         echo 'upadte<br>';
         $id = $getData['id'];
         unset($getData['id']);
-        $errorMessage = $blog->updateBlog($getData, $id);
-        checkError($errorMessage);
+        $editErrorMessage = $blog->updateBlog($getData, $id);
+        checkError($editErrorMessage);
     } elseif ($action == 'delete') {
         echo 'delete<br>';
-        $errorMessage = $blog->deleteBlog($getData['id']);
-        checkError($errorMessage);
+        $editErrorMessage = $blog->deleteBlog($getData['id']);
+        checkError($editErrorMessage);
     }
 } elseif ($method == 'POST') {
-    print_r($_POST);
     $errorMessage = $blog->createBlog($_POST);
     checkError($errorMessage);
 }

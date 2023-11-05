@@ -2,10 +2,6 @@
 
 include 'handle.php';
 
-print_r($_GET);
-echo "<br>";
-print_r($_POST);
-
 $title = !empty($_POST) ? $_POST['title'] : "";
 $description = !empty($_POST) ? $_POST['description'] : "";
 
@@ -30,14 +26,15 @@ $description = !empty($_POST) ? $_POST['description'] : "";
         <main>
             <form method="post">
                 <label for="title">Tituls:</label>
-                <input type="text" name="title" value="<?=$title?>">
+                <input type="text" name="title" value="<?= $title ?>">
                 <label for="description">Apraksts:</label>
-                <textarea name="description" rows="1"><?=$description?></textarea>
+                <textarea name="description" rows="1"><?= $description ?></textarea>
                 <span>
                     <?= $errorMessage ?>
                 </span>
                 <button>Pievienot <i class="fa-solid fa-thumbs-up"></i></button>
             </form>
+            <h2>List of blogs: </h2>
             <div class="wrapper">
                 <!-- <form class="blog">
                     <div class="content">
@@ -47,7 +44,10 @@ $description = !empty($_POST) ? $_POST['description'] : "";
                     <button class="edit" name="action" value="edit"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="delete"><i class="fa-solid fa-eraser"></i></button>
                 </form> -->
-                <?php foreach ($data as $blog) {
+
+                <?php
+                if(empty($data)) echo "<h3>Sorry, no blogs available</h3>";
+                 foreach ($data as $blog) {
                     $isEdit = isset($_GET["id"]) && $blog["id"] == $_GET["id"] && $_GET["action"] == 'edit' ? true : false;
                     // echo "isEdit: " . ($isEdit ?"true":"false");
                     ?>
@@ -56,10 +56,12 @@ $description = !empty($_POST) ? $_POST['description'] : "";
                             <input type="hidden" name="id" value="<?= $blog["id"] ?>">
                             <?php if ($isEdit) { ?>
                                 <label for="title">Tituls:</label>
-                                <input type="title" name="title" value="<?= $blog["title"] ?>">
+                                <input type="title" name="title" value="<?= strip_tags($blog["title"]) ?>">
                                 <label for="description">Apraksts:</label>
-                                <textarea name="description" rows="1"><?= $blog["description"] ?></textarea>
-                                <span><?=$errorMessage?></span>
+                                <textarea name="description" rows="1"><?= strip_tags($blog["description"]) ?></textarea>
+                                <span>
+                                    <?= $editErrorMessage ?>
+                                </span>
                             <?php } else { ?>
                                 <h2>
                                     <?= $blog["title"] ?>
@@ -84,13 +86,19 @@ $description = !empty($_POST) ? $_POST['description'] : "";
             the simplest blogging website
         </footer>
         <script>
-            const textarea = document.querySelectorAll('textarea');
-            for (elem of textarea) {
-                elem.addEventListener('input', function () {
-                    this.style.height = 'auto';
-                    const height = this.scrollHeight + this.offsetHeight - this.clientHeight + 2;
-                    this.style.height = height + 'px';
-                });
+            window.onload = () => {
+                const textarea = document.querySelectorAll('textarea');
+                for (elem of textarea) {
+                    elem.autoTextarea = autoTextarea;
+                    elem.addEventListener('input', elem.autoTextarea);
+                    elem.autoTextarea();
+                }
+            }
+            function autoTextarea() {
+                console.log(this);
+                this.style.height = 'auto';
+                const height = this.scrollHeight + this.offsetHeight - this.clientHeight + 2;
+                this.style.height = height + 'px';
             }
         </script>
     </body>
